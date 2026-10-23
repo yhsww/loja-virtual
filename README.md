@@ -1,2 +1,2 @@
 nao vai ter javafx dessa vez
-<img width="2056" height="765" alt="image" src="https://github.com/user-attachments/assets/47ab6513-5672-4295-a448-ec65d3759b22" />
+<img width="2720" height="2980" alt="loja_virtual_diagrama_classes_visao_geral" src="https://github.com/user-attachments/assets/18c856ee-7eb4-40f0-89be-e468ca389964" />
