@@ -11,7 +11,7 @@ public class Comprador {
     private Carrinho carrinho;
     private List<Compra> compras;
 
-    public Comprador(String nome, String cpf, String email){
+    public Comprador(String nome, String cpf, String email) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
@@ -19,45 +19,43 @@ public class Comprador {
         this.compras = new ArrayList<>();
     }
 
-    public void addCompra(Compra compra){
+    public void addCompra(Compra compra) {
         this.compras.add(compra);
     }
 
-    public List<Compra> consultarHistorico(){
+    public List<Compra> consultarHistorico() {
         return compras;
     }
 
-    public void setNome(String nome){
+    public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public String getNome(){
+    public String getNome() {
         return this.nome;
     }
 
-    public void setCpf(String cpf){
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
-    public String getCpf(){
+    public String getCpf() {
         return this.cpf;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return this.email;
     }
 
-    public void setCarrinho(Carrinho carrinho){
+    public void setCarrinho(Carrinho carrinho) {
         this.carrinho = carrinho;
     }
 
-    public Carrinho getCarrinho(){
+    public Carrinho getCarrinho() {
         return this.carrinho;
     }
-
-
 }

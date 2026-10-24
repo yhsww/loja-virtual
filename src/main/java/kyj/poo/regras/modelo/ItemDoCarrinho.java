@@ -5,29 +5,28 @@ public class ItemDoCarrinho {
     private Produto produto;
     private int qtd;
 
-    public ItemDoCarrinho(Produto produto, int qtd){
+    public ItemDoCarrinho(Produto produto, int qtd) {
         this.produto = produto;
         this.qtd = qtd;
     }
 
-    public void setProduto(Produto produto){
+    public void setProduto(Produto produto) {
         this.produto = produto;
     }
 
-    public double calcularSubtotal(){
-        return qtd*produto.getPreco();
+    public long calcularSubtotal() {
+        return qtd * produto.getPreco();
     }
 
-    public Produto getProduto(){
+    public Produto getProduto() {
         return this.produto;
     }
 
-    public void setQtd(int qtd){
+    public void setQtd(int qtd) {
         this.qtd = qtd;
     }
 
-    public int getQtd(){
+    public int getQtd() {
         return this.qtd;
     }
-
 }

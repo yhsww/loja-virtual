@@ -2,8 +2,8 @@ package kyj.poo.regras.pagamento;
 
 public class PagamentoComPix implements FormaPagamento {
     @Override
-    public double calcularTotal(double subtotal) {
-        return subtotal * 0.95;
+    public long calcularTotal(long subtotal) {
+        return subtotal * (95 / 100);
     }
 
     @Override

@@ -1,8 +1,9 @@
 package kyj.poo.regras.pagamento;
 
 public class PagamentoComCartaoDeCredito implements FormaPagamento {
+
     @Override
-    public double calcularTotal(double subtotal) {
+    public long calcularTotal(long subtotal) {
         return subtotal;
     }
 

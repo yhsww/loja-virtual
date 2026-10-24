@@ -1,6 +1,6 @@
 package kyj.poo.regras.pagamento;
 
 public interface FormaPagamento {
-    double calcularTotal(double subtotal);
+    long calcularTotal(long subtotal);
     String getDescricao();
 }

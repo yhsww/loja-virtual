@@ -2,25 +2,24 @@ package kyj.poo.regras.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import kyj.poo.regras.pagamento.FormaPagamento;
 
-public class Compra{
+public class Compra {
 
     private List<ItemDaCompra> itens;
     private FormaPagamento pagamento;
     private boolean cancelada;
 
-    public Compra(){
+    public Compra() {
         this.itens = new ArrayList<>();
         this.cancelada = false;
     }
 
-    public void cancelar(){
+    public void cancelar() {
         this.cancelada = true;
     }
 
-    public boolean isCancelada(){
+    public boolean isCancelada() {
         return this.cancelada;
     }
 
@@ -28,22 +27,20 @@ public class Compra{
         this.itens.add(item);
     }
 
-    public double calcularSubtotal() {
+    public long calcularSubtotal() {
+        long subtotal = 0;
 
-        double subtotal = 0;
-
-        for(ItemDaCompra item : itens){
+        for (ItemDaCompra item : itens) {
             subtotal += item.calcularSubtotal();
         }
 
         return subtotal;
     }
 
-    public double calcularTotal() {
+    public long calcularTotal() {
+        long subtotal = calcularSubtotal();
 
-        double subtotal = calcularSubtotal();
-
-        if(pagamento == null){
+        if (pagamento == null) {
             return subtotal;
         }
 
@@ -54,11 +51,11 @@ public class Compra{
         this.pagamento = pagamento;
     }
 
-    public FormaPagamento getPagamento(){
+    public FormaPagamento getPagamento() {
         return this.pagamento;
     }
 
-    public List<ItemDaCompra> getItens(){
+    public List<ItemDaCompra> getItens() {
         return this.itens;
     }
 }

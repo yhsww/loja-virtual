@@ -2,12 +2,12 @@ package kyj.poo.regras.pagamento;
 
 public class PagamentoComCartaoDeDebito implements FormaPagamento {
     @Override
-    public double calcularTotal(double subtotal) {
-        return subtotal * 0.90;
+    public long calcularTotal(long subtotal) {
+        return subtotal * (90 / 100);
     }
 
     @Override
     public String getDescricao() {
-        return "Cartão de dédito (desconto de 10%)";
+        return "Cartão de débito (desconto de 10%)";
     }
 }
