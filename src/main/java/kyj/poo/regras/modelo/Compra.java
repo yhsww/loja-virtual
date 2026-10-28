@@ -1,16 +1,29 @@
 package kyj.poo.regras.modelo;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 import kyj.poo.regras.pagamento.FormaPagamento;
 
 public class Compra {
 
+    private String compradorNome;
+    private String id;
+    private String dataHora;
     private List<ItemDaCompra> itens;
-    private FormaPagamento pagamento;
+    private String pagamento;
     private boolean cancelada;
+    private long subtotal;
+    private long desconto;
+    private long valorFinal;
 
-    public Compra() {
+    public Compra(String compradorNome) {
+        
+        this.id = UUID.randomUUID().toString();
+        this.dataHora = LocalDateTime.now().toString();
+        this.compradorNome = compradorNome;
         this.itens = new ArrayList<>();
         this.cancelada = false;
     }
@@ -37,25 +50,51 @@ public class Compra {
         return subtotal;
     }
 
-    public long calcularTotal() {
-        long subtotal = calcularSubtotal();
+    public void fechar(FormaPagamento formaPagamento) {
+        this.subtotal = calcularSubtotal();
+        this.valorFinal = formaPagamento.calcularTotal(this.subtotal);
+        this.desconto = this.subtotal - this.valorFinal;
+        this.pagamento = formaPagamento.getDescricao();
 
-        if (pagamento == null) {
-            return subtotal;
-        }
-
-        return pagamento.calcularTotal(subtotal);
     }
 
-    public void setPagamento(FormaPagamento pagamento) {
+    public long calcularTotal() {
+        return this.valorFinal;
+    }
+
+    public void setPagamento(String pagamento) {
         this.pagamento = pagamento;
     }
 
-    public FormaPagamento getPagamento() {
+    public String getId() {
+        return this.id;
+    }
+
+    public String getCompradorNome () {
+        return this.compradorNome;
+    }
+
+    public LocalDateTime getDataHora () {
+        return LocalDateTime.parse(dataHora);
+    }
+
+    public String getPagamento() {
         return this.pagamento;
     }
 
     public List<ItemDaCompra> getItens() {
         return this.itens;
+    }
+
+    public long getSubtotal() {
+        return this.subtotal;
+    }
+
+    public long getDesconto() {
+        return this.desconto;
+    }
+
+    public long getValorFinal() {
+        return this.valorFinal;
     }
 }

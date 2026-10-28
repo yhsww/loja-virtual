@@ -23,12 +23,30 @@ public class Comprador {
         this.compras.add(compra);
     }
 
+    public long calcularTotalGasto () {
+
+        long total = 0;
+
+        for(Compra compra : this.compras){
+            if(!compra.isCancelada()){
+                total += compra.getValorFinal();
+            }
+        }
+
+        return total;
+    }
+
     public List<Compra> consultarHistorico() {
         return compras;
     }
 
     public void setNome(String nome) {
+
+        if(nome == null || nome.isBlank())
+            throw new IllegalArgumentException("O nome não pode ser vazio.");
+
         this.nome = nome;
+
     }
 
     public String getNome() {

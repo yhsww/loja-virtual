@@ -7,4 +7,10 @@ public class EstoqueInsuficienteException extends Exception {
             "A quantidade de unidades disponíveis no estoque é insuficiente para realizar a operação."
         );
     }
+
+    public EstoqueInsuficienteException(String nomeProduto) {
+        super(
+            "Estoque insuficiente para o produto: " + nomeProduto + "."
+        );
+    }
 }
