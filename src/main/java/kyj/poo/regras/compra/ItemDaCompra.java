@@ -24,7 +24,7 @@ public record ItemDaCompra(
         return new ItemDaCompra(
             produto.getId(),
             produto.getNome(),
-            produto.getEstoque(),
+            item.getQtd(),
             produto.getPreco()
         );
     }

@@ -82,4 +82,18 @@ public class Produto {
     public int getEstoque() {
         return this.estoque;
     }
+
+    @Override
+    public boolean equals(Object outro) {
+        if (this == outro) return true; // compara por referencia
+        if (!(outro instanceof Produto)) return false; // checa se o outro objeto é de fato um produto
+
+        Produto produto = (Produto) outro; // casting de seguraca
+        return this.id.equals(produto.id); // no final, retorna uma comparação pelo hash de cada objeto, um valor verdadeiramente unico
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
 }
