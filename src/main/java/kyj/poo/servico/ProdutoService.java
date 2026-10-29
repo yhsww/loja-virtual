@@ -1,4 +1,4 @@
-package kyj.poo.regras.servico;
+package kyj.poo.servico;
 
 import java.util.ArrayList;
 import java.util.List;
