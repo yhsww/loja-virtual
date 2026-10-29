@@ -1,7 +1,10 @@
-package kyj.poo.regras.modelo;
+package kyj.poo.regras;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import kyj.poo.regras.carrinho.Carrinho;
+import kyj.poo.regras.compra.Compra;
 
 public class Comprador {
 
@@ -23,12 +26,11 @@ public class Comprador {
         this.compras.add(compra);
     }
 
-    public long calcularTotalGasto () {
-
+    public long calcularTotalGasto() {
         long total = 0;
 
-        for(Compra compra : this.compras){
-            if(!compra.isCancelada()){
+        for (Compra compra : this.compras) {
+            if (!compra.isCancelada()) {
                 total += compra.getValorFinal();
             }
         }
@@ -41,12 +43,11 @@ public class Comprador {
     }
 
     public void setNome(String nome) {
-
-        if(nome == null || nome.isBlank())
-            throw new IllegalArgumentException("O nome não pode ser vazio.");
+        if (nome == null || nome.isBlank()) throw new IllegalArgumentException(
+            "O nome não pode ser vazio."
+        );
 
         this.nome = nome;
-
     }
 
     public String getNome() {

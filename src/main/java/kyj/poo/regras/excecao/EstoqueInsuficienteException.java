@@ -9,8 +9,6 @@ public class EstoqueInsuficienteException extends Exception {
     }
 
     public EstoqueInsuficienteException(String nomeProduto) {
-        super(
-            "Estoque insuficiente para o produto: " + nomeProduto + "."
-        );
+        super("Estoque insuficiente para o produto: " + nomeProduto + ".");
     }
 }

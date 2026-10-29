@@ -1,8 +1,8 @@
-package kyj.poo.regras.modelo;
+package kyj.poo.regras.carrinho;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import kyj.poo.regras.Produto;
 import kyj.poo.regras.excecao.EstoqueInsuficienteException;
 import kyj.poo.regras.excecao.ProdutoNaoEncontradoException;
 import kyj.poo.regras.excecao.QuantidadeInvalidaException;
@@ -16,8 +16,7 @@ public class Carrinho {
     }
 
     public void addProdutos(Produto produto, int qtd)
-            throws QuantidadeInvalidaException, EstoqueInsuficienteException {
-
+        throws QuantidadeInvalidaException, EstoqueInsuficienteException {
         if (qtd <= 0) {
             throw new QuantidadeInvalidaException();
         }
@@ -30,37 +29,35 @@ public class Carrinho {
             throw new EstoqueInsuficienteException();
         }
 
-        if(busca == null){
+        if (busca == null) {
             itens.add(new ItemDoCarrinho(produto, qtd));
-        }else{
+        } else {
             busca.setQtd(novaQtd);
         }
     }
 
-    public void removeProdutos(Produto produto) throws ProdutoNaoEncontradoException {
+    public void removeProdutos(Produto produto)
+        throws ProdutoNaoEncontradoException {
         ItemDoCarrinho item = buscarItem(produto);
-        if(item == null){
+        if (item == null) {
             throw new ProdutoNaoEncontradoException();
         }
         itens.remove(item);
     }
 
     public void alterarQuantidade(Produto produto, int qtd)
-            throws QuantidadeInvalidaException, 
-            EstoqueInsuficienteException,
-            ProdutoNaoEncontradoException {
-        
+        throws QuantidadeInvalidaException, EstoqueInsuficienteException, ProdutoNaoEncontradoException {
         ItemDoCarrinho item = buscarItem(produto);
 
-        if(item == null){
+        if (item == null) {
             throw new ProdutoNaoEncontradoException();
         }
 
-        if(qtd <= 0){
+        if (qtd <= 0) {
             throw new QuantidadeInvalidaException();
         }
 
-        if(!produto.verificarEstoque(qtd)){
+        if (!produto.verificarEstoque(qtd)) {
             throw new EstoqueInsuficienteException();
         }
 
@@ -84,13 +81,11 @@ public class Carrinho {
     }
 
     private ItemDoCarrinho buscarItem(Produto produto) {
-
         for (ItemDoCarrinho item : this.itens) {
-            if(item.getProduto().getId().equals(produto.getId())) {
+            if (item.getProduto().getId().equals(produto.getId())) {
                 return item;
             }
         }
         return null;
     }
 }
-

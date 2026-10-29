@@ -2,26 +2,26 @@ package kyj.poo.regras.servico;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import kyj.poo.persistencia.ProdutoRepositorio;
+import kyj.poo.regras.Produto;
 import kyj.poo.regras.excecao.PersistenciaException;
 import kyj.poo.regras.excecao.ProdutoDuplicadoException;
 import kyj.poo.regras.excecao.ProdutoNaoEncontradoException;
 import kyj.poo.regras.excecao.QuantidadeInvalidaException;
-import kyj.poo.regras.modelo.Produto;
-import kyj.poo.regras.persistencia.ProdutoRepositorio;
 
 public class ProdutoService {
 
     private final ProdutoRepositorio repositorio;
     private final List<Produto> produtos;
 
-    public ProdutoService (ProdutoRepositorio repositorio) throws PersistenciaException {
+    public ProdutoService(ProdutoRepositorio repositorio)
+        throws PersistenciaException {
         this.repositorio = repositorio;
         this.produtos = new ArrayList<>(repositorio.carregar());
     }
 
-    public void addProduto (Produto produto) throws ProdutoDuplicadoException, PersistenciaException {
-        
+    public void addProduto(Produto produto)
+        throws ProdutoDuplicadoException, PersistenciaException {
         if (produtos.contains(produto)) {
             throw new ProdutoDuplicadoException(produto.getId());
         }
@@ -29,34 +29,29 @@ public class ProdutoService {
         produtos.add(produto);
 
         try {
-
             repositorio.salvar(produtos);
-
         } catch (PersistenciaException e) {
-            
             produtos.remove(produto);
             throw e;
         }
-
     }
 
-    public void removerProduto (String id) throws ProdutoNaoEncontradoException, PersistenciaException {
+    public void removerProduto(String id)
+        throws ProdutoNaoEncontradoException, PersistenciaException {
         Produto busca = buscarProduto(id);
         int pos = produtos.indexOf(busca);
         produtos.remove(busca);
 
         try {
-
             repositorio.salvar(produtos);
         } catch (PersistenciaException e) {
-
             produtos.set(pos, busca);
             throw e;
         }
     }
 
-    public void editarProduto (String id, String novoNome, long novoPreco) throws ProdutoNaoEncontradoException, PersistenciaException {
-
+    public void editarProduto(String id, String novoNome, long novoPreco)
+        throws ProdutoNaoEncontradoException, PersistenciaException {
         Produto busca = buscarProduto(id);
         String nomeAntes = busca.getNome();
         long precoAntes = busca.getPreco();
@@ -65,15 +60,12 @@ public class ProdutoService {
         busca.setPreco(novoPreco);
 
         try {
-
             repositorio.salvar(produtos);
         } catch (PersistenciaException e) {
-
             busca.setNome(nomeAntes);
             busca.setPreco(precoAntes);
             throw e;
         }
-
     }
 
     public void salvar() throws PersistenciaException {
@@ -91,10 +83,8 @@ public class ProdutoService {
         produto.aumentarEstoque(qtd);
 
         try {
-
             repositorio.salvar(produtos);
         } catch (PersistenciaException e) {
-
             produto.setEstoque(qtdAntes - qtd);
             throw e;
         }

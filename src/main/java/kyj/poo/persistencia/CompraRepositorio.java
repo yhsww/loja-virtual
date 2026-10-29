@@ -1,14 +1,11 @@
-package kyj.poo.regras.persistencia;
+package kyj.poo.persistencia;
 
 import java.util.List;
-
+import kyj.poo.regras.compra.Compra;
 import kyj.poo.regras.excecao.PersistenciaException;
-import kyj.poo.regras.modelo.Compra;
 
 public interface CompraRepositorio {
-
     List<Compra> carregar() throws PersistenciaException;
 
-    void salvar (List<Compra> compras) throws PersistenciaException;
-    
+    void salvar(List<Compra> compras) throws PersistenciaException;
 }

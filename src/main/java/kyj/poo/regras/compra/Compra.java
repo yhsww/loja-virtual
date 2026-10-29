@@ -1,10 +1,9 @@
-package kyj.poo.regras.modelo;
+package kyj.poo.regras.compra;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import kyj.poo.regras.pagamento.FormaPagamento;
 
 public class Compra {
@@ -20,7 +19,6 @@ public class Compra {
     private long valorFinal;
 
     public Compra(String compradorNome) {
-        
         this.id = UUID.randomUUID().toString();
         this.dataHora = LocalDateTime.now().toString();
         this.compradorNome = compradorNome;
@@ -55,7 +53,6 @@ public class Compra {
         this.valorFinal = formaPagamento.calcularTotal(this.subtotal);
         this.desconto = this.subtotal - this.valorFinal;
         this.pagamento = formaPagamento.getDescricao();
-
     }
 
     public long calcularTotal() {
@@ -70,11 +67,11 @@ public class Compra {
         return this.id;
     }
 
-    public String getCompradorNome () {
+    public String getCompradorNome() {
         return this.compradorNome;
     }
 
-    public LocalDateTime getDataHora () {
+    public LocalDateTime getDataHora() {
         return LocalDateTime.parse(dataHora);
     }
 

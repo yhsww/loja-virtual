@@ -6,9 +6,7 @@ public class ProdutoNaoEncontradoException extends Exception {
         super("Produto não encontrado.");
     }
 
-    public ProdutoNaoEncontradoException(String id){
-        super(
-            "Produto com id: " + id + " não encontrado."
-        );
+    public ProdutoNaoEncontradoException(String id) {
+        super("Produto com id: " + id + " não encontrado.");
     }
 }

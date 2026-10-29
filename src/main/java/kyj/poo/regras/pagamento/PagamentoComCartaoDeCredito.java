@@ -2,7 +2,7 @@ package kyj.poo.regras.pagamento;
 
 public class PagamentoComCartaoDeCredito implements FormaPagamento {
 
-    @Override 
+    @Override
     public boolean processar(long valor) {
         return valor > 0;
     }

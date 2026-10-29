@@ -1,4 +1,4 @@
-package kyj.poo.regras.modelo;
+package kyj.poo.regras;
 
 import kyj.poo.regras.excecao.EstoqueInsuficienteException;
 import kyj.poo.regras.excecao.QuantidadeInvalidaException;
@@ -17,19 +17,16 @@ public class Produto {
         this.estoque = estoque;
     }
 
-    public void aumentarEstoque(int qtd) throws QuantidadeInvalidaException{
-        if(qtd <= 0)
-            throw new QuantidadeInvalidaException();
+    public void aumentarEstoque(int qtd) throws QuantidadeInvalidaException {
+        if (qtd <= 0) throw new QuantidadeInvalidaException();
         this.estoque += qtd;
     }
 
-    public void diminuirEstoque(int qtd) throws QuantidadeInvalidaException, EstoqueInsuficienteException {
-        
-        if(qtd <= 0)
-            throw new QuantidadeInvalidaException();
+    public void diminuirEstoque(int qtd)
+        throws QuantidadeInvalidaException, EstoqueInsuficienteException {
+        if (qtd <= 0) throw new QuantidadeInvalidaException();
 
-        if(!verificarEstoque(qtd))
-            throw new EstoqueInsuficienteException();
+        if (!verificarEstoque(qtd)) throw new EstoqueInsuficienteException();
 
         this.estoque -= qtd;
     }
@@ -39,12 +36,11 @@ public class Produto {
     }
 
     public void setId(String id) {
+        if (id == null || id.isBlank()) throw new IllegalArgumentException(
+            "O id não pode ser vazio."
+        );
 
-        if(id == null || id.isBlank())
-            throw new IllegalArgumentException("O id não pode ser vazio.");
-        
         this.id = id.trim();
-
     }
 
     public String getId() {
@@ -52,12 +48,11 @@ public class Produto {
     }
 
     public void setNome(String nome) {
-
-        if(nome == null || nome.isBlank())
-            throw new IllegalArgumentException("O nome não pode ser vazio.");
+        if (nome == null || nome.isBlank()) throw new IllegalArgumentException(
+            "O nome não pode ser vazio."
+        );
 
         this.nome = nome.trim();
-
     }
 
     public String getNome() {
@@ -65,12 +60,11 @@ public class Produto {
     }
 
     public void setPreco(long preco) {
-
-        if(preco <0)
-            throw new IllegalArgumentException("O preço do produto deve ser positivo.");
+        if (preco < 0) throw new IllegalArgumentException(
+            "O preço do produto deve ser positivo."
+        );
 
         this.preco = preco;
-
     }
 
     public long getPreco() {
@@ -78,12 +72,11 @@ public class Produto {
     }
 
     public void setEstoque(int estoque) {
-
-        if(estoque < 0)
-            throw new IllegalArgumentException("A quantidade de unidades no estoque deve ser positiva.");
+        if (estoque < 0) throw new IllegalArgumentException(
+            "A quantidade de unidades no estoque deve ser positiva."
+        );
 
         this.estoque = estoque;
-
     }
 
     public int getEstoque() {

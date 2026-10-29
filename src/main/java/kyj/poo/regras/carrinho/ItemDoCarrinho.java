@@ -1,4 +1,6 @@
-package kyj.poo.regras.modelo;
+package kyj.poo.regras.carrinho;
+
+import kyj.poo.regras.Produto;
 
 public class ItemDoCarrinho {
 
