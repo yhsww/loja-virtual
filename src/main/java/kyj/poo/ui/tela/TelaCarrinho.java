@@ -8,7 +8,7 @@ import kyj.poo.regras.carrinho.ItemDoCarrinho;
 import kyj.poo.regras.excecao.EstoqueInsuficienteException;
 import kyj.poo.regras.excecao.ProdutoNaoEncontradoException;
 import kyj.poo.regras.excecao.QuantidadeInvalidaException;
-import kyj.poo.regras.servico.CompraService;
+import kyj.poo.servico.CompraService;
 import kyj.poo.ui.Entrada;
 import kyj.poo.ui.Formatador;
 

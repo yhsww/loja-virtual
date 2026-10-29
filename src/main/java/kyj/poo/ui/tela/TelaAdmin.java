@@ -6,7 +6,7 @@ import kyj.poo.regras.excecao.PersistenciaException;
 import kyj.poo.regras.excecao.ProdutoDuplicadoException;
 import kyj.poo.regras.excecao.ProdutoNaoEncontradoException;
 import kyj.poo.regras.excecao.QuantidadeInvalidaException;
-import kyj.poo.regras.servico.ProdutoService;
+import kyj.poo.servico.ProdutoService;
 import kyj.poo.ui.Entrada;
 import kyj.poo.ui.Formatador;
 

@@ -11,7 +11,7 @@ import kyj.poo.regras.pagamento.FormaPagamento;
 import kyj.poo.regras.pagamento.PagamentoComCartaoDeCredito;
 import kyj.poo.regras.pagamento.PagamentoComCartaoDeDebito;
 import kyj.poo.regras.pagamento.PagamentoComPix;
-import kyj.poo.regras.servico.CompraService;
+import kyj.poo.servico.CompraService;
 import kyj.poo.ui.Entrada;
 import kyj.poo.ui.Formatador;
 

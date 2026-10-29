@@ -1,8 +1,8 @@
 package kyj.poo.ui.tela;
 
 import kyj.poo.regras.Comprador;
-import kyj.poo.regras.servico.CompraService;
-import kyj.poo.regras.servico.ProdutoService;
+import kyj.poo.servico.CompraService;
+import kyj.poo.servico.ProdutoService;
 import kyj.poo.ui.Entrada;
 import kyj.poo.ui.Formatador;
 

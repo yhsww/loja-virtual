@@ -5,7 +5,7 @@ import java.util.List;
 import kyj.poo.regras.Comprador;
 import kyj.poo.regras.compra.Compra;
 import kyj.poo.regras.compra.ItemDaCompra;
-import kyj.poo.regras.servico.CompraService;
+import kyj.poo.servico.CompraService;
 import kyj.poo.ui.Formatador;
 
 public class TelaHistorico {

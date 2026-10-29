@@ -4,8 +4,8 @@ import java.io.File;
 import kyj.poo.persistencia.CompraRepositorioJson;
 import kyj.poo.persistencia.ProdutoRepositorioJson;
 import kyj.poo.regras.excecao.PersistenciaException;
-import kyj.poo.regras.servico.CompraService;
-import kyj.poo.regras.servico.ProdutoService;
+import kyj.poo.servico.CompraService;
+import kyj.poo.servico.ProdutoService;
 import kyj.poo.ui.tela.TelaAdmin;
 import kyj.poo.ui.tela.TelaComprador;
 
