@@ -9,7 +9,7 @@ public class PagamentoComCartaoDeDebito implements FormaPagamento {
 
     @Override
     public long calcularTotal(long subtotal) {
-        return subtotal * (90 / 100);
+        return subtotal * 90 / 100;
     }
 
     @Override
