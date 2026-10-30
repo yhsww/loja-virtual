@@ -8,6 +8,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+        <exec.mainClass>kyj.poo.Main</exec.mainClass>
     </properties>
     <dependencies>
         <dependency>
@@ -15,7 +16,6 @@
             <artifactId>gson</artifactId>
             <version>2.11.0</version>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>
