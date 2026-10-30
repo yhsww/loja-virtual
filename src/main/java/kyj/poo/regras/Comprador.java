@@ -11,13 +11,16 @@ public class Comprador {
     private String nome;
     private String cpf;
     private String email;
+    private final String senha;
     private Carrinho carrinho;
-    private List<Compra> compras;
 
-    public Comprador(String nome, String cpf, String email) {
+    private final List<Compra> compras;
+
+    public Comprador(String nome, String cpf, String email, String senha) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
+        this.senha = senha;
         this.carrinho = new Carrinho();
         this.compras = new ArrayList<>();
     }
@@ -76,5 +79,9 @@ public class Comprador {
 
     public Carrinho getCarrinho() {
         return this.carrinho;
+    }
+
+    public String getSenha() {
+        return this.senha;
     }
 }

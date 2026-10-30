@@ -1,8 +1,14 @@
 package kyj.poo;
 
-public class Main {
+import javax.swing.SwingUtilities;
+import kyj.poo.ui.Aplicacao;
+import kyj.poo.ui.Tema;
 
+public class Main {
     public static void main(String[] args) {
-        System.out.println("roda");
+        System.setProperty("awt.useSystemAAFontSettings", "on");
+        System.setProperty("swing.aatext", "true");
+        Tema.aplicar();
+        SwingUtilities.invokeLater(() -> new Aplicacao().setVisible(true));
     }
 }
