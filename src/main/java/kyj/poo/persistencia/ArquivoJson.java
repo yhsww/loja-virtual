@@ -39,6 +39,9 @@ final class ArquivoJson {
 
     static void gravar(File arquivo, Object dados)
         throws PersistenciaException {
+        File pai = arquivo.getParentFile();
+        if (pai != null) pai.mkdirs();
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo))) {
             String objeto = GSON.toJson(dados);
             bw.write(objeto);

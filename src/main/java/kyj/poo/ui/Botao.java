@@ -1,11 +1,25 @@
 package kyj.poo.ui;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import javax.swing.BorderFactory;
+import javax.swing.ButtonModel;
+import javax.swing.JButton;
 
 public class Botao extends JButton {
 
-    public enum Variante { PRIMARIO, SECUNDARIO, PERIGO, TEXTO, NAV }
+    public enum Variante {
+        PRIMARIO,
+        SECUNDARIO,
+        PERIGO,
+        TEXTO,
+        NAV,
+    }
 
     private Variante variante;
     private boolean ativo;
@@ -23,11 +37,25 @@ public class Botao extends JButton {
         setVariante(variante);
     }
 
-    public static Botao primario(String t) { return new Botao(t, Variante.PRIMARIO); }
-    public static Botao secundario(String t) { return new Botao(t, Variante.SECUNDARIO); }
-    public static Botao perigo(String t) { return new Botao(t, Variante.PERIGO); }
-    public static Botao texto(String t) { return new Botao(t, Variante.TEXTO); }
-    public static Botao nav(String t) { return new Botao(t, Variante.NAV); }
+    public static Botao primario(String t) {
+        return new Botao(t, Variante.PRIMARIO);
+    }
+
+    public static Botao secundario(String t) {
+        return new Botao(t, Variante.SECUNDARIO);
+    }
+
+    public static Botao perigo(String t) {
+        return new Botao(t, Variante.PERIGO);
+    }
+
+    public static Botao texto(String t) {
+        return new Botao(t, Variante.TEXTO);
+    }
+
+    public static Botao nav(String t) {
+        return new Botao(t, Variante.NAV);
+    }
 
     public void setVariante(Variante v) {
         this.variante = v;
@@ -46,31 +74,48 @@ public class Botao extends JButton {
             case PRIMARIO, PERIGO -> setForeground(Color.WHITE);
             case SECUNDARIO -> setForeground(Tema.TEXTO);
             case TEXTO -> setForeground(Tema.PRIMARIA);
-            case NAV -> setForeground(ativo ? Color.WHITE : new Color(209, 213, 219));
+            case NAV -> setForeground(
+                ativo ? Color.WHITE : new Color(209, 213, 219)
+            );
         }
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(
+            RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON
+        );
 
         ButtonModel m = getModel();
         boolean hover = m.isRollover();
         boolean press = m.isPressed() && m.isArmed();
         boolean on = isEnabled();
-        int w = getWidth(), h = getHeight();
+        int w = getWidth(),
+            h = getHeight();
 
         switch (variante) {
             case PRIMARIO -> {
-                g2.setColor(!on ? new Color(165, 180, 252)
-                        : press ? Tema.PRIMARIA_ESCURA.darker()
-                        : hover ? Tema.PRIMARIA_ESCURA : Tema.PRIMARIA);
+                g2.setColor(
+                    !on
+                        ? new Color(165, 180, 252)
+                        : press
+                          ? Tema.PRIMARIA_ESCURA.darker()
+                          : hover
+                            ? Tema.PRIMARIA_ESCURA
+                            : Tema.PRIMARIA
+                );
                 g2.fillRoundRect(0, 0, w, h, 12, 12);
             }
             case PERIGO -> {
-                g2.setColor(!on ? new Color(252, 165, 165)
-                        : hover ? Tema.PERIGO.darker() : Tema.PERIGO);
+                g2.setColor(
+                    !on
+                        ? new Color(252, 165, 165)
+                        : hover
+                          ? Tema.PERIGO.darker()
+                          : Tema.PERIGO
+                );
                 g2.fillRoundRect(0, 0, w, h, 12, 12);
             }
             case SECUNDARIO -> {

@@ -1,9 +1,30 @@
 package kyj.poo.ui.tela;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.RenderingHints;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import kyj.poo.regras.Produto;
-import kyj.poo.ui.*;
+import kyj.poo.ui.Aplicacao;
+import kyj.poo.ui.Botao;
+import kyj.poo.ui.Carrossel;
+import kyj.poo.ui.Cartao;
+import kyj.poo.ui.Sessao;
+import kyj.poo.ui.Tela;
+import kyj.poo.ui.Tema;
 
 public class TelaLoja extends Tela {
 
@@ -13,12 +34,24 @@ public class TelaLoja extends Tela {
         super(app);
 
         Carrossel carrossel = new Carrossel(
-                new Carrossel.Slide("Bem-vindo à Loja Virtual", "Os melhores produtos com entrega rápida",
-                        new Color(79, 70, 229), new Color(147, 51, 234)),
-                new Carrossel.Slide("Ofertas da semana", "Aproveite descontos em produtos selecionados",
-                        new Color(225, 29, 72), new Color(249, 115, 22)),
-                new Carrossel.Slide("Frete grátis", "Em compras acima de R$ 200,00",
-                        new Color(5, 150, 105), new Color(13, 148, 136))
+            new Carrossel.Slide(
+                "Bem-vindo à Loja Virtual",
+                "Os melhores produtos com entrega rápida",
+                new Color(79, 70, 229),
+                new Color(147, 51, 234)
+            ),
+            new Carrossel.Slide(
+                "Ofertas da semana",
+                "Aproveite descontos em produtos selecionados",
+                new Color(225, 29, 72),
+                new Color(249, 115, 22)
+            ),
+            new Carrossel.Slide(
+                "Frete grátis",
+                "Em compras acima de R$ 200,00",
+                new Color(5, 150, 105),
+                new Color(13, 148, 136)
+            )
         );
 
         JPanel topoGrade = Tema.painel(new BorderLayout());
@@ -77,7 +110,9 @@ public class TelaLoja extends Tela {
         info.add(Tema.esq(estoque));
         c.add(info, BorderLayout.CENTER);
 
-        Botao add = Botao.primario(p.getEstoque() == 0 ? "Esgotado" : "Adicionar ao carrinho");
+        Botao add = Botao.primario(
+            p.getEstoque() == 0 ? "Esgotado" : "Adicionar ao carrinho"
+        );
         add.setEnabled(p.getEstoque() > 0);
         add.addActionListener(e -> {
             if (Sessao.logado == null) {
@@ -98,6 +133,7 @@ public class TelaLoja extends Tela {
     }
 
     private static class ImagemProduto extends JComponent {
+
         private final String nome;
 
         ImagemProduto(String nome) {
@@ -108,8 +144,12 @@ public class TelaLoja extends Tela {
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            int w = getWidth(), h = getHeight();
+            g2.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON
+            );
+            int w = getWidth(),
+                h = getHeight();
 
             float matiz = (Math.abs(nome.hashCode()) % 360) / 360f;
             Color a = Color.getHSBColor(matiz, 0.45f, 0.95f);
@@ -121,12 +161,17 @@ public class TelaLoja extends Tela {
             g2.setColor(new Color(255, 255, 255, 80));
             g2.fillOval((w - d) / 2, (h - d) / 2, d, d);
 
-            String inicial = nome.isEmpty() ? "?" : nome.substring(0, 1).toUpperCase();
+            String inicial = nome.isEmpty()
+                ? "?"
+                : nome.substring(0, 1).toUpperCase();
             g2.setColor(Color.WHITE);
             g2.setFont(Tema.fonte(Font.BOLD, 30f));
             FontMetrics fm = g2.getFontMetrics();
-            g2.drawString(inicial, (w - fm.stringWidth(inicial)) / 2,
-                    (h + fm.getAscent() - fm.getDescent()) / 2);
+            g2.drawString(
+                inicial,
+                (w - fm.stringWidth(inicial)) / 2,
+                (h + fm.getAscent() - fm.getDescent()) / 2
+            );
             g2.dispose();
         }
     }

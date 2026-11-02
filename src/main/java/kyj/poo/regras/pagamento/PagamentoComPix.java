@@ -9,7 +9,7 @@ public class PagamentoComPix implements FormaPagamento {
 
     @Override
     public long calcularTotal(long subtotal) {
-        return subtotal * 95 / 100;
+        return (subtotal * 95) / 100;
     }
 
     @Override

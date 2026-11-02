@@ -1,16 +1,39 @@
 package kyj.poo.ui.tela;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+
 import kyj.poo.regras.Produto;
-import kyj.poo.ui.*;
+import kyj.poo.ui.Aplicacao;
+import kyj.poo.ui.Botao;
+import kyj.poo.ui.Cartao;
+import kyj.poo.ui.Sessao;
+import kyj.poo.ui.Tela;
+import kyj.poo.ui.Tema;
 
 public class TelaAdmin extends Tela {
 
     private final DefaultTableModel modelo = new DefaultTableModel(
-            new String[] { "ID", "PRODUTO", "PREÇO", "ESTOQUE" }, 0) {
-        @Override public boolean isCellEditable(int r, int c) { return false; }
+        new String[] { "ID", "PRODUTO", "PREÇO", "ESTOQUE" },
+        0
+    ) {
+        @Override
+        public boolean isCellEditable(int r, int c) {
+            return false;
+        }
     };
     private final JTable tabela = new JTable(modelo);
 
@@ -50,7 +73,10 @@ public class TelaAdmin extends Tela {
 
         // tabela
         Cartao cartaoTabela = new Cartao(new BorderLayout(), 16, 6);
-        cartaoTabela.add(Tema.rolagem(tabela, Color.WHITE), BorderLayout.CENTER);
+        cartaoTabela.add(
+            Tema.rolagem(tabela, Color.WHITE),
+            BorderLayout.CENTER
+        );
 
         // formulário
         Botao add = Botao.primario("Adicionar");
@@ -69,7 +95,10 @@ public class TelaAdmin extends Tela {
         campos.add(Tema.campoRotulado("Estoque", estoque));
 
         JPanel botoes = Tema.painel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        botoes.add(add); botoes.add(salvar); botoes.add(remover); botoes.add(limpar);
+        botoes.add(add);
+        botoes.add(salvar);
+        botoes.add(remover);
+        botoes.add(limpar);
 
         Cartao cartaoForm = new Cartao(new BorderLayout(0, 14), 16, 14);
         cartaoForm.add(campos, BorderLayout.CENTER);
@@ -99,14 +128,21 @@ public class TelaAdmin extends Tela {
     }
 
     @Override
-    public void aoMostrar() { recarregar(); }
+    public void aoMostrar() {
+        recarregar();
+    }
 
     private void recarregar() {
         modelo.setRowCount(0);
-        long unidades = 0, valorTotal = 0;
+        long unidades = 0,
+            valorTotal = 0;
         for (Produto p : Sessao.produtos) {
             modelo.addRow(new Object[] {
-                    p.getId(), p.getNome(), Sessao.moeda(p.getPreco()), p.getEstoque() });
+                p.getId(),
+                p.getNome(),
+                Sessao.moeda(p.getPreco()),
+                p.getEstoque(),
+            });
             unidades += p.getEstoque();
             valorTotal += p.getPreco() * p.getEstoque();
         }
@@ -122,29 +158,44 @@ public class TelaAdmin extends Tela {
         id.setText(p.getId());
         id.setEnabled(false); // o ID não muda
         nome.setText(p.getNome());
-        preco.setText(String.format("%d,%02d", p.getPreco() / 100, p.getPreco() % 100));
+        preco.setText(
+            String.format("%d,%02d", p.getPreco() / 100, p.getPreco() % 100)
+        );
         estoque.setText(String.valueOf(p.getEstoque()));
     }
 
     private void limparForm() {
         tabela.clearSelection();
         id.setEnabled(true);
-        id.setText(""); nome.setText(""); preco.setText(""); estoque.setText("");
+        id.setText("");
+        nome.setText("");
+        preco.setText("");
+        estoque.setText("");
     }
 
     private void adicionar() {
         try {
             String i = id.getText().trim();
-            if (i.isEmpty()) { erro("Informe o ID."); return; }
-            for (Produto p : Sessao.produtos) {
-                if (p.getId().equals(i)) { erro("Já existe produto com esse ID."); return; }
+            if (i.isEmpty()) {
+                erro("Informe o ID.");
+                return;
             }
-            Produto novo = new Produto(i, nome.getText().trim(),
-                    Sessao.parseMoeda(preco.getText()), Integer.parseInt(estoque.getText().trim()));
+            for (Produto p : Sessao.produtos) {
+                if (p.getId().equals(i)) {
+                    erro("Já existe produto com esse ID.");
+                    return;
+                }
+            }
+            Produto novo = new Produto(
+                i,
+                nome.getText().trim(),
+                Sessao.parseMoeda(preco.getText()),
+                Integer.parseInt(estoque.getText().trim())
+            );
             novo.setNome(novo.getNome());
             novo.setPreco(novo.getPreco());
             novo.setEstoque(novo.getEstoque());
-            Sessao.produtos.add(novo);
+            Sessao.produtoService.addProduto(novo);
             recarregar();
             limparForm();
         } catch (Exception ex) {
@@ -154,12 +205,18 @@ public class TelaAdmin extends Tela {
 
     private void salvar() {
         int i = tabela.getSelectedRow();
-        if (i < 0) { erro("Selecione um produto na tabela."); return; }
+        if (i < 0) {
+            erro("Selecione um produto na tabela.");
+            return;
+        }
         try {
             Produto p = Sessao.produtos.get(i);
-            p.setNome(nome.getText());
-            p.setPreco(Sessao.parseMoeda(preco.getText()));
-            p.setEstoque(Integer.parseInt(estoque.getText().trim()));
+            Sessao.produtoService.editarProduto(
+                p.getId(),
+                nome.getText(),
+                Sessao.parseMoeda(preco.getText()),
+                Integer.parseInt(estoque.getText().trim())
+            );
             recarregar();
             limparForm();
         } catch (Exception ex) {
@@ -169,11 +226,25 @@ public class TelaAdmin extends Tela {
 
     private void remover() {
         int i = tabela.getSelectedRow();
-        if (i < 0) { erro("Selecione um produto na tabela."); return; }
-        int r = JOptionPane.showConfirmDialog(this, "Remover este produto?", "Confirmar",
-                JOptionPane.YES_NO_OPTION);
+        if (i < 0) {
+            erro("Selecione um produto na tabela.");
+            return;
+        }
+        int r = JOptionPane.showConfirmDialog(
+            this,
+            "Remover este produto?",
+            "Confirmar",
+            JOptionPane.YES_NO_OPTION
+        );
         if (r != JOptionPane.YES_OPTION) return;
-        Sessao.produtos.remove(i);
+        try {
+            Sessao.produtoService.removerProduto(
+                Sessao.produtos.get(i).getId()
+            );
+        } catch (Exception ex) {
+            erro("Não foi possível remover o produto.");
+            return;
+        }
         recarregar();
         limparForm();
     }

@@ -1,7 +1,6 @@
 package kyj.poo.persistencia;
 
 import java.util.List;
-
 import kyj.poo.regras.Produto;
 import kyj.poo.regras.excecao.PersistenciaException;
 

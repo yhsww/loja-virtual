@@ -52,18 +52,30 @@ public class ProdutoService {
 
     public void editarProduto(String id, String novoNome, long novoPreco)
         throws ProdutoNaoEncontradoException, PersistenciaException {
+        editarProduto(id, novoNome, novoPreco, buscarProduto(id).getEstoque());
+    }
+
+    public void editarProduto(
+        String id,
+        String novoNome,
+        long novoPreco,
+        int novoEstoque
+    ) throws ProdutoNaoEncontradoException, PersistenciaException {
         Produto busca = buscarProduto(id);
         String nomeAntes = busca.getNome();
         long precoAntes = busca.getPreco();
+        int estoqueAntes = busca.getEstoque();
 
         busca.setNome(novoNome);
         busca.setPreco(novoPreco);
+        busca.setEstoque(novoEstoque);
 
         try {
             repositorio.salvar(produtos);
         } catch (PersistenciaException e) {
             busca.setNome(nomeAntes);
             busca.setPreco(precoAntes);
+            busca.setEstoque(estoqueAntes);
             throw e;
         }
     }

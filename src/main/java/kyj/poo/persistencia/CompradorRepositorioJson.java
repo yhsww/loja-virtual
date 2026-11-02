@@ -1,4 +1,3 @@
-
 package kyj.poo.persistencia;
 
 import com.google.gson.reflect.TypeToken;
@@ -18,13 +17,14 @@ public class CompradorRepositorioJson implements CompradorRepositorio {
     @Override
     public List<Comprador> carregar() throws PersistenciaException {
         return ArquivoJson.ler(
-                this.arquivo,
-                new TypeToken<List<Comprador>>() {}.getType()
+            this.arquivo,
+            new TypeToken<List<Comprador>>() {}.getType()
         );
     }
 
     @Override
-    public void salvar(List<Comprador> compradores) throws PersistenciaException {
+    public void salvar(List<Comprador> compradores)
+        throws PersistenciaException {
         ArquivoJson.gravar(this.arquivo, compradores);
     }
 }

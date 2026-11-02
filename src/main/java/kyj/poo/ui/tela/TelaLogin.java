@@ -1,8 +1,15 @@
 package kyj.poo.ui.tela;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
 import kyj.poo.regras.Comprador;
-import kyj.poo.ui.*;
+import kyj.poo.ui.Aplicacao;
+import kyj.poo.ui.Botao;
+import kyj.poo.ui.Sessao;
+import kyj.poo.ui.Tela;
+import kyj.poo.ui.Tema;
 
 public class TelaLogin extends Tela {
 
@@ -18,12 +25,20 @@ public class TelaLogin extends Tela {
         email.addActionListener(e -> entrar());
         senha.addActionListener(e -> entrar());
 
-        add(layoutAuth("Bom te ver de novo",
+        add(
+            layoutAuth(
+                "Bom te ver de novo",
                 "Entre para acompanhar seu carrinho e finalizar suas compras com segurança.",
-                formulario("Entrar", "Use seu e-mail e senha cadastrados",
-                        new String[] { "E-mail", "Senha" },
-                        new JComponent[] { email, senha },
-                        entrar, criar)));
+                formulario(
+                    "Entrar",
+                    "Use seu e-mail e senha cadastrados",
+                    new String[] { "E-mail", "Senha" },
+                    new JComponent[] { email, senha },
+                    entrar,
+                    criar
+                )
+            )
+        );
     }
 
     private void entrar() {
@@ -38,14 +53,13 @@ public class TelaLogin extends Tela {
             return;
         }
 
-        for (Comprador c : Sessao.compradores) {
-            if (c.getEmail().equalsIgnoreCase(em) && c.getSenha().equals(s)) {
-                Sessao.logado = c;
-                Sessao.admin = false;
-                limpar();
-                app.ir("loja");
-                return;
-            }
+        Comprador c = Sessao.compradorService.login(em, s);
+        if (c != null) {
+            Sessao.logado = c;
+            Sessao.admin = false;
+            limpar();
+            app.ir("loja");
+            return;
         }
         erro("E-mail ou senha incorretos.");
     }

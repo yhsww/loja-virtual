@@ -1,20 +1,14 @@
 package kyj.poo.regras;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import kyj.poo.regras.carrinho.Carrinho;
-import kyj.poo.regras.compra.Compra;
 
 public class Comprador {
 
     private String nome;
     private String cpf;
     private String email;
-    private final String senha;
-    private Carrinho carrinho;
-
-    private final List<Compra> compras;
+    private String senha;
+    private transient Carrinho carrinho;
 
     public Comprador(String nome, String cpf, String email, String senha) {
         this.nome = nome;
@@ -22,27 +16,6 @@ public class Comprador {
         this.email = email;
         this.senha = senha;
         this.carrinho = new Carrinho();
-        this.compras = new ArrayList<>();
-    }
-
-    public void addCompra(Compra compra) {
-        this.compras.add(compra);
-    }
-
-    public long calcularTotalGasto() {
-        long total = 0;
-
-        for (Compra compra : this.compras) {
-            if (!compra.isCancelada()) {
-                total += compra.getValorFinal();
-            }
-        }
-
-        return total;
-    }
-
-    public List<Compra> consultarHistorico() {
-        return compras;
     }
 
     public void setNome(String nome) {
@@ -78,6 +51,7 @@ public class Comprador {
     }
 
     public Carrinho getCarrinho() {
+        if (this.carrinho == null) this.carrinho = new Carrinho();
         return this.carrinho;
     }
 

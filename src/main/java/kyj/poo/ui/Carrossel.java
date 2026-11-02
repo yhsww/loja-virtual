@@ -1,14 +1,33 @@
 package kyj.poo.ui;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
-import javax.swing.*;
+
+import javax.swing.JComponent;
+import javax.swing.Timer;
 
 public class Carrossel extends JComponent {
 
-    public record Slide(String titulo, String subtitulo, Color cor1, Color cor2) {}
+    public record Slide(
+        String titulo,
+        String subtitulo,
+        Color cor1,
+        Color cor2
+    ) {}
 
     private final Slide[] slides;
     private final Rectangle[] pontos;
@@ -40,20 +59,22 @@ public class Carrossel extends JComponent {
         auto = new Timer(4500, e -> mover(1));
         auto.start();
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                Point p = e.getPoint();
-                if (setaEsq.contains(p)) mover(-1);
-                else if (setaDir.contains(p)) mover(1);
-                else {
-                    for (int i = 0; i < pontos.length; i++) {
-                        if (pontos[i].contains(p)) ir(i);
+        addMouseListener(
+            new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    Point p = e.getPoint();
+                    if (setaEsq.contains(p)) mover(-1);
+                    else if (setaDir.contains(p)) mover(1);
+                    else {
+                        for (int i = 0; i < pontos.length; i++) {
+                            if (pontos[i].contains(p)) ir(i);
+                        }
                     }
+                    auto.restart();
                 }
-                auto.restart();
             }
-        });
+        );
     }
 
     private void mover(int passo) {
@@ -71,9 +92,16 @@ public class Carrossel extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        int w = getWidth(), h = getHeight();
+        g2.setRenderingHint(
+            RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON
+        );
+        g2.setRenderingHint(
+            RenderingHints.KEY_TEXT_ANTIALIASING,
+            RenderingHints.VALUE_TEXT_ANTIALIAS_ON
+        );
+        int w = getWidth(),
+            h = getHeight();
 
         g2.setClip(new RoundRectangle2D.Float(0, 0, w, h, 26, 26));
         desenhar(g2, slides[anterior], 1f, w, h);
@@ -87,12 +115,15 @@ public class Carrossel extends JComponent {
 
         // bolinhas
         int larguraTotal = 0;
-        for (int i = 0; i < slides.length; i++) larguraTotal += (i == atual ? 28 : 10) + 8;
+        for (int i = 0; i < slides.length; i++) larguraTotal +=
+            (i == atual ? 28 : 10) + 8;
         int x = (w - larguraTotal + 8) / 2;
         int y = h - 28;
         for (int i = 0; i < slides.length; i++) {
             int largura = i == atual ? 28 : 10;
-            g2.setColor(i == atual ? Color.WHITE : new Color(255, 255, 255, 120));
+            g2.setColor(
+                i == atual ? Color.WHITE : new Color(255, 255, 255, 120)
+            );
             g2.fillRoundRect(x, y, largura, 10, 10, 10);
             pontos[i].setBounds(x - 4, y - 6, largura + 8, 22);
             x += largura + 8;
@@ -102,7 +133,9 @@ public class Carrossel extends JComponent {
 
     private void desenhar(Graphics2D g2, Slide s, float a, int w, int h) {
         Composite antigo = g2.getComposite();
-        g2.setComposite(AlphaComposite.SrcOver.derive(Math.max(0f, Math.min(1f, a))));
+        g2.setComposite(
+            AlphaComposite.SrcOver.derive(Math.max(0f, Math.min(1f, a)))
+        );
 
         g2.setPaint(new GradientPaint(0, 0, s.cor1(), w, h, s.cor2()));
         g2.fillRect(0, 0, w, h);
@@ -126,8 +159,10 @@ public class Carrossel extends JComponent {
         g2.setColor(Color.WHITE);
         g2.setFont(Tema.fonte(Font.BOLD, 26f));
         FontMetrics fm = g2.getFontMetrics();
-        g2.drawString(s,
-                r.x + (r.width - fm.stringWidth(s)) / 2,
-                r.y + (r.height + fm.getAscent() - fm.getDescent()) / 2);
+        g2.drawString(
+            s,
+            r.x + (r.width - fm.stringWidth(s)) / 2,
+            r.y + (r.height + fm.getAscent() - fm.getDescent()) / 2
+        );
     }
 }

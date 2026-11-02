@@ -1,7 +1,17 @@
 package kyj.poo.ui;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+
+import javax.swing.Box;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public abstract class Tela extends JPanel {
 
@@ -16,11 +26,21 @@ public abstract class Tela extends JPanel {
     public void aoMostrar() {}
 
     protected void erro(String msg) {
-        JOptionPane.showMessageDialog(this, msg, "Atenção", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(
+            this,
+            msg,
+            "Atenção",
+            JOptionPane.WARNING_MESSAGE
+        );
     }
 
     protected void info(String msg) {
-        JOptionPane.showMessageDialog(this, msg, "Loja Virtual", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(
+            this,
+            msg,
+            "Loja Virtual",
+            JOptionPane.INFORMATION_MESSAGE
+        );
     }
 
     protected static JPanel linha(JComponent esquerda, JComponent direita) {
@@ -30,8 +50,14 @@ public abstract class Tela extends JPanel {
         return l;
     }
 
-    protected JPanel formulario(String titulo, String subtitulo, String[] rotulos,
-                                JComponent[] campos, Botao principal, Botao... secundarios) {
+    protected JPanel formulario(
+        String titulo,
+        String subtitulo,
+        String[] rotulos,
+        JComponent[] campos,
+        Botao principal,
+        Botao... secundarios
+    ) {
         JPanel col = Tema.coluna();
         col.add(Tema.esq(Tema.titulo(titulo)));
         col.add(Box.createVerticalStrut(6));
@@ -62,18 +88,25 @@ public abstract class Tela extends JPanel {
     }
 
     protected JPanel layoutAuth(String titulo, String frase, JPanel form) {
-        PainelGradiente lado = new PainelGradiente(Tema.PRIMARIA, new Color(124, 58, 237));
+        PainelGradiente lado = new PainelGradiente(
+            Tema.PRIMARIA,
+            new Color(124, 58, 237)
+        );
         lado.setLayout(new GridBagLayout());
 
         JLabel marca = new JLabel("Loja Virtual");
         marca.setFont(Tema.fonte(Font.BOLD, 20f));
         marca.setForeground(new Color(199, 210, 254));
 
-        JLabel t = new JLabel("<html><div style='width:300px'>" + titulo + "</div></html>");
+        JLabel t = new JLabel(
+            "<html><div style='width:300px'>" + titulo + "</div></html>"
+        );
         t.setFont(Tema.fonte(Font.BOLD, 34f));
         t.setForeground(Color.WHITE);
 
-        JLabel f = new JLabel("<html><div style='width:300px'>" + frase + "</div></html>");
+        JLabel f = new JLabel(
+            "<html><div style='width:300px'>" + frase + "</div></html>"
+        );
         f.setFont(Tema.fonte(Font.PLAIN, 16f));
         f.setForeground(new Color(224, 231, 255));
 
