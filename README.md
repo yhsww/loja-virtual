@@ -407,6 +407,6 @@ Projeto desenvolvido como parte de atividades acadêmicas relacionadas à discip
 
 ---
 
-## 📄 Licença
+## Licença
 
 Este projeto é destinado a fins acadêmicos.
