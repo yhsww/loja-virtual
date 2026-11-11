@@ -10,6 +10,7 @@ public class Comprador {
     private String senha;
     private transient Carrinho carrinho;
 
+
     public Comprador(String nome, String cpf, String email, String senha) {
         this.nome = nome;
         this.cpf = cpf;
@@ -17,6 +18,8 @@ public class Comprador {
         this.senha = senha;
         this.carrinho = new Carrinho();
     }
+
+    public Comprador() {}
 
     public void setNome(String nome) {
         if (nome == null || nome.isBlank()) throw new IllegalArgumentException(

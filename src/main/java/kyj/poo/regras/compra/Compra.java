@@ -9,6 +9,8 @@ import kyj.poo.regras.pagamento.FormaPagamento;
 public class Compra {
 
     private String compradorNome;
+    private String compradorCpf;
+    private String compradorEmail;
     private String id;
     private String dataHora;
     private List<ItemDaCompra> itens;
@@ -18,13 +20,17 @@ public class Compra {
     private long desconto;
     private long valorFinal;
 
-    public Compra(String compradorNome) {
+    public Compra(String compradorNome, String compradorCpf, String compradorEmail) {
         this.id = UUID.randomUUID().toString();
         this.dataHora = LocalDateTime.now().toString();
         this.compradorNome = compradorNome;
+        this.compradorCpf = compradorCpf;
+        this.compradorEmail = compradorEmail;
         this.itens = new ArrayList<>();
         this.cancelada = false;
     }
+
+    public Compra() {}
 
     public void cancelar() {
         this.cancelada = true;
@@ -69,6 +75,14 @@ public class Compra {
 
     public String getCompradorNome() {
         return this.compradorNome;
+    }
+
+    public String getCompradorCpf() {
+    return this.compradorCpf;
+    }
+
+    public String getCompradorEmail() {
+        return this.compradorEmail;
     }
 
     public LocalDateTime getDataHora() {

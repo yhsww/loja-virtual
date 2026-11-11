@@ -10,6 +10,8 @@ public class Produto {
     private long preco;
     private int estoque;
 
+    public Produto() {}
+
     public Produto(String id, String nome, long preco, int estoque) {
         this.id = id;
         this.nome = nome;
