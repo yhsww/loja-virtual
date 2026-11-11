@@ -1,7 +1,7 @@
 module kyj.poo {
     requires java.desktop;
     requires com.google.gson;
-
+    requires java.net.http;
 
     opens kyj.poo.regras to com.google.gson;
     opens kyj.poo.regras.carrinho to com.google.gson;
