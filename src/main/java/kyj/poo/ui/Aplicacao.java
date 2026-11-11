@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import kyj.poo.regras.carrinho.ItemDoCarrinho;
+import kyj.poo.ui.tela.TelaChatBot;
 import kyj.poo.ui.tela.TelaAdmin;
 import kyj.poo.ui.tela.TelaCarrinho;
 import kyj.poo.ui.tela.TelaCheckout;
@@ -61,6 +62,7 @@ public class Aplicacao extends JFrame {
         add(centro, BorderLayout.CENTER);
 
         registrar("loja", new TelaLoja(this));
+        registrar("chatbot", new TelaChatBot(this));
         registrar("cadastro", new TelaComprador(this));
         registrar("login", new TelaLogin(this));
         registrar("admin", new TelaAdmin(this));
@@ -137,6 +139,7 @@ public class Aplicacao extends JFrame {
                 qtd += it.getQtd();
             nav.add(item("Carrinho (" + qtd + ")", "carrinho"));
             nav.add(item("Histórico", "historico"));
+            nav.add(item("Chatbot", "chatbot"));
 
             JLabel ola = new JLabel(
                 "Olá, " + Sessao.logado.getNome().trim().split(" ")[0]
