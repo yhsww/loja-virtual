@@ -50,7 +50,12 @@ public class CompraService {
             }
         }
 
-        Compra compra = new Compra(comprador.getNome());
+        Compra compra = new Compra(
+                        comprador.getNome(),
+                        comprador.getCpf(),
+                        comprador.getEmail()
+                    );
+
 
         for (ItemDoCarrinho item : itens) {
             compra.addItem(ItemDaCompra.de(item));
@@ -103,7 +108,11 @@ public class CompraService {
             "O carrinho está vazio."
         );
 
-        Compra compra = new Compra(comprador.getNome());
+        Compra compra = new Compra(
+                        comprador.getNome(),
+                        comprador.getCpf(),
+                        comprador.getEmail()
+                    );
 
         for (ItemDoCarrinho item : itens) {
             compra.addItem(ItemDaCompra.de(item));
