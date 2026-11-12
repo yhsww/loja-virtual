@@ -1,14 +1,22 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from chatbot import perguntar, criar_contexto_cliente
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
 
-app = FastAPI()
+from chatbot import criar_contexto_cliente, perguntar
+
+
+app = FastAPI(
+    title="Chatbot da Loja Virtual",
+    description="API da assistente virtual Íris.",
+    version="1.0.0",
+)
+
 
 class ChatBotPergunta(BaseModel):
-    nome: str
-    cpf: str
-    email: str
-    pergunta: str
+    nome: str = Field(..., min_length=1)
+    cpf: str = Field(..., min_length=1)
+    email: str = Field(..., min_length=1)
+    pergunta: str = Field(..., min_length=1)
+
 
 @app.get("/")
 def inicio():
@@ -16,13 +24,38 @@ def inicio():
         "mensagem": "O chat está funcionando!"
     }
 
+
 @app.post("/chat")
 def conversar(dados: ChatBotPergunta):
-    
-    contexto = criar_contexto_cliente(dados.cpf, dados.email)
-    
-    resposta = perguntar(dados.pergunta, contexto)
-    
-    return {
-        "resposta": resposta
-    }
+    try:
+        contexto = criar_contexto_cliente(
+            dados.cpf,
+            dados.email,
+        )
+
+        resposta = perguntar(
+            dados.pergunta,
+            contexto,
+        )
+
+        return {
+            "resposta": resposta
+        }
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        ) from exc
+
+    except RuntimeError as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=str(exc),
+        ) from exc
+
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail="Erro interno ao processar a pergunta.",
+        ) from exc
