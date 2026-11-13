@@ -7,52 +7,23 @@ from google import genai
 
 
 BASE_DIR = Path(__file__).resolve().parent
-
-ARQUIVOS_DADOS = (
-    "produtos.json",
-    "compras.json",
-    "compradores.json",
-)
+ARQUIVOS_DADOS = ("produtos.json", "compras.json", "compradores.json")
 
 
-def localizar_diretorio_dados():
-    """
-    Localiza automaticamente a pasta que contém os arquivos de dados.
-
-    A busca começa na pasta do chatbot e sobe pela árvore de diretórios,
-    procurando uma pasta que contenha os três arquivos esperados.
-    Assim, a aplicação não depende de um caminho fixo definido pelo usuário.
-    """
-    inicio = BASE_DIR
-
-    for diretorio in (inicio, *inicio.parents):
-        if all((diretorio / arquivo).is_file() for arquivo in ARQUIVOS_DADOS):
-            return diretorio
-
-        # Permite encontrar a pasta de dados em uma subpasta do projeto,
-        # mesmo que a estrutura seja diferente em outro computador.
-        try:
-            for candidato in diretorio.iterdir():
-                if (
-                    candidato.is_dir()
-                    and not candidato.name.startswith(".")
-                    and all(
-                        (candidato / arquivo).is_file()
-                        for arquivo in ARQUIVOS_DADOS
-                    )
-                ):
-                    return candidato
-        except OSError:
-            continue
+def localizar_dados():
+    """Encontra automaticamente a pasta que contém os três arquivos JSON."""
+    for arquivo in BASE_DIR.parent.rglob("produtos.json"):
+        pasta = arquivo.parent
+        if all((pasta / nome).is_file() for nome in ARQUIVOS_DADOS):
+            return pasta
 
     raise RuntimeError(
-        "Não foi possível localizar automaticamente a pasta de dados. "
-        "Os arquivos esperados são: produtos.json, compras.json "
-        "e compradores.json."
+        "Pasta de dados não encontrada. "
+        "Verifique se produtos.json, compras.json e compradores.json existem."
     )
 
 
-DATA_DIR = localizar_diretorio_dados()
+DATA_DIR = localizar_dados()
 
 load_dotenv(BASE_DIR / ".env")
 
