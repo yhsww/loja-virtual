@@ -7,7 +7,35 @@ from google import genai
 
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR.parent.parent / "dados"
+
+
+def localizar_diretorio_dados():
+    """
+    Localiza a pasta compartilhada de dados da aplicação.
+
+    Estrutura atual:
+        loja2/
+        ├── dados/
+        └── loja-virtual/
+            └── chat-bot/
+
+    O primeiro caminho mantém compatibilidade caso o projeto seja reorganizado
+    futuramente e a pasta dados fique diretamente na raiz do repositório.
+    """
+    candidatos = (
+        BASE_DIR.parent / "dados",
+        BASE_DIR.parent.parent / "dados",
+    )
+
+    for caminho in candidatos:
+        if caminho.is_dir():
+            return caminho
+
+    # Mantém uma referência determinística para mensagens de erro.
+    return BASE_DIR.parent.parent / "dados"
+
+
+DATA_DIR = localizar_diretorio_dados()
 
 load_dotenv(BASE_DIR / ".env")
 
@@ -83,16 +111,13 @@ def formatar_produtos(produtos):
 
 
 def obter_historico_cliente(compras, cpf_cliente, email_cliente):
-    cpf_cliente = cpf_cliente.strip()
-    email_cliente = email_cliente.strip().lower()
-
     historico = []
 
     for compra in compras:
-        cpf_compra = str(compra.get("compradorCpf", "")).strip()
-        email_compra = str(compra.get("compradorEmail", "")).strip().lower()
-
-        if cpf_compra == cpf_cliente and email_compra == email_cliente:
+        if (
+            compra.get("compradorCpf") == cpf_cliente
+            and compra.get("compradorEmail") == email_cliente
+        ):
             historico.append(
                 {
                     "Data": compra.get("dataHora", "Data não informada"),
@@ -138,7 +163,6 @@ def formatar_historico_cliente(historico):
                 f"- Subtotal: R$ {subtotal:.2f}",
                 f"- Desconto: R$ {desconto:.2f}",
                 f"- Valor final: R$ {valor_final:.2f}",
-                f"- Pagamento: {compra['Pagamento']}",
                 (
                     "Status da compra: cancelada"
                     if compra["Cancelada"]
@@ -213,9 +237,6 @@ def perguntar(pergunta, contexto):
             contents=f"{contexto}\n\nPergunta do cliente: {pergunta}",
         )
     except Exception as exc:
-        print(
-            f"[ERRO GEMINI] {type(exc).__name__}: {exc}"
-        )
         raise RuntimeError(
             "Não foi possível obter uma resposta do Gemini."
         ) from exc
