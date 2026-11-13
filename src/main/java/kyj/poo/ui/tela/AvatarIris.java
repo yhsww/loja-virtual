@@ -8,12 +8,7 @@ import java.awt.RenderingHints;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-/**
- * Mascote pixel art da Íris.
- *
- * A arte é desenhada em uma pequena grade e ampliada com nearest-neighbor.
- * Assim o visual permanece pixelado sem depender de bibliotecas externas.
- */
+
 public class AvatarIris extends JPanel {
 
     private static final int GRADE = 32;
