@@ -8,36 +8,24 @@ from google import genai
 
 BASE_DIR = Path(__file__).resolve().parent
 
+load_dotenv(BASE_DIR / ".env")
 
-def localizar_diretorio_dados():
-    """
-    Localiza a pasta compartilhada de dados da aplicação.
+# A localização dos dados é configurável pelo ambiente.
+# Caminhos relativos são resolvidos a partir da pasta chat-bot, evitando
+# dependência de uma estrutura específica de diretórios ou do computador.
+DATA_DIR_CONFIG = os.getenv("DATA_DIR")
 
-    Estrutura atual:
-        loja2/
-        ├── dados/
-        └── loja-virtual/
-            └── chat-bot/
-
-    O primeiro caminho mantém compatibilidade caso o projeto seja reorganizado
-    futuramente e a pasta dados fique diretamente na raiz do repositório.
-    """
-    candidatos = (
-        BASE_DIR.parent / "dados",
-        BASE_DIR.parent.parent / "dados",
+if not DATA_DIR_CONFIG:
+    raise RuntimeError(
+        "DATA_DIR não foi configurada. "
+        "Defina no .env o caminho da pasta que contém produtos.json, "
+        "compras.json e compradores.json."
     )
 
-    for caminho in candidatos:
-        if caminho.is_dir():
-            return caminho
-
-    # Mantém uma referência determinística para mensagens de erro.
-    return BASE_DIR.parent.parent / "dados"
-
-
-DATA_DIR = localizar_diretorio_dados()
-
-load_dotenv(BASE_DIR / ".env")
+DATA_DIR = Path(DATA_DIR_CONFIG).expanduser()
+if not DATA_DIR.is_absolute():
+    DATA_DIR = BASE_DIR / DATA_DIR
+DATA_DIR = DATA_DIR.resolve()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
@@ -64,16 +52,20 @@ def carregar_json(nome_arquivo):
         if dados is None:
             return []
 
-        if not isinstance(dados, (list, dict)):
+        if not isinstance(dados, list):
             raise RuntimeError(
-                f"O arquivo JSON deve conter uma lista ou objeto: {caminho}"
+                f"O arquivo JSON deve conter uma lista: {caminho}"
             )
 
         return dados
 
     except json.JSONDecodeError as exc:
         raise RuntimeError(
-            f"Arquivo JSON inválido: {caminho}"
+            f"Arquivo JSON inválido: {caminho}: {exc}"
+        ) from exc
+    except OSError as exc:
+        raise RuntimeError(
+            f"Não foi possível ler o arquivo {caminho}: {exc}"
         ) from exc
 
 
@@ -237,9 +229,14 @@ def perguntar(pergunta, contexto):
             contents=f"{contexto}\n\nPergunta do cliente: {pergunta}",
         )
     except Exception as exc:
-        raise RuntimeError(
-            "Não foi possível obter uma resposta do Gemini."
-        ) from exc
+        mensagem = (
+            f"Falha ao consultar o Gemini. "
+            f"Modelo: {MODEL}. "
+            f"Tipo: {type(exc).__name__}. "
+            f"Detalhes: {exc}"
+        )
+        print(f"[ERRO] {mensagem}")
+        raise RuntimeError(mensagem) from exc
 
     texto_resposta = getattr(resposta, "text", None)
 
