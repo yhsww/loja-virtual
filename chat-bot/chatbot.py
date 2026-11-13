@@ -83,13 +83,16 @@ def formatar_produtos(produtos):
 
 
 def obter_historico_cliente(compras, cpf_cliente, email_cliente):
+    cpf_cliente = cpf_cliente.strip()
+    email_cliente = email_cliente.strip().lower()
+
     historico = []
 
     for compra in compras:
-        if (
-            compra.get("compradorCpf") == cpf_cliente
-            and compra.get("compradorEmail") == email_cliente
-        ):
+        cpf_compra = str(compra.get("compradorCpf", "")).strip()
+        email_compra = str(compra.get("compradorEmail", "")).strip().lower()
+
+        if cpf_compra == cpf_cliente and email_compra == email_cliente:
             historico.append(
                 {
                     "Data": compra.get("dataHora", "Data não informada"),
@@ -135,6 +138,7 @@ def formatar_historico_cliente(historico):
                 f"- Subtotal: R$ {subtotal:.2f}",
                 f"- Desconto: R$ {desconto:.2f}",
                 f"- Valor final: R$ {valor_final:.2f}",
+                f"- Pagamento: {compra['Pagamento']}",
                 (
                     "Status da compra: cancelada"
                     if compra["Cancelada"]
@@ -209,6 +213,9 @@ def perguntar(pergunta, contexto):
             contents=f"{contexto}\n\nPergunta do cliente: {pergunta}",
         )
     except Exception as exc:
+        print(
+            f"[ERRO GEMINI] {type(exc).__name__}: {exc}"
+        )
         raise RuntimeError(
             "Não foi possível obter uma resposta do Gemini."
         ) from exc
