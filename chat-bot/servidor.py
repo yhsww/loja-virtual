@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from chatbot import criar_contexto_cliente, perguntar
@@ -60,9 +61,10 @@ def conversar(dados: ChatBotPergunta):
             contexto,
         )
 
-        return {
-            "resposta": resposta
-        }
+        return JSONResponse(
+            content={"resposta": resposta},
+            headers={"Content-Type": "application/json; charset=utf-8"},
+        )
 
     except ValueError as exc:
         raise HTTPException(
