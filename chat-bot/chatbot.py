@@ -7,7 +7,8 @@ from google import genai
 
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR.parent / "dados"
+PROJECT_ROOT = BASE_DIR.parent.parent
+DATA_DIR = PROJECT_ROOT / "dados"
 
 load_dotenv(BASE_DIR / ".env")
 
@@ -26,13 +27,18 @@ client = genai.Client(api_key=API_KEY)
 def carregar_json(nome_arquivo):
     caminho = DATA_DIR / nome_arquivo
 
+    if not caminho.exists():
+        return []
+
     try:
         with caminho.open("r", encoding="utf-8") as file:
-            return json.load(file)
-    except FileNotFoundError as exc:
-        raise RuntimeError(
-            f"Arquivo de dados não encontrado: {caminho}"
-        ) from exc
+            dados = json.load(file)
+
+        if dados is None:
+            return []
+
+        return dados
+
     except json.JSONDecodeError as exc:
         raise RuntimeError(
             f"Arquivo JSON inválido: {caminho}"
