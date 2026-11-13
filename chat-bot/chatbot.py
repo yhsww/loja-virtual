@@ -7,42 +7,28 @@ from google import genai
 
 
 BASE_DIR = Path(__file__).resolve().parent
-ARQUIVOS_DADOS = ("produtos.json", "compras.json", "compradores.json")
+ARQUIVOS_DADOS = {
+    "produtos.json",
+    "compras.json",
+    "compradores.json",
+}
 
 
 def localizar_dados():
-    """Encontra automaticamente a pasta que contém os três arquivos JSON."""
-    for arquivo in BASE_DIR.parent.rglob("produtos.json"):
-        pasta = arquivo.parent
-        if all((pasta / nome).is_file() for nome in ARQUIVOS_DADOS):
-            return pasta
+    """Encontra a pasta que contém os arquivos JSON necessários."""
+    for pasta in [Path.cwd(), *Path.cwd().parents]:
+        for arquivo in pasta.rglob("produtos.json"):
+            dados = {item.name for item in arquivo.parent.glob("*.json")}
 
-    raise RuntimeError(
-        "Pasta de dados não encontrada. "
-        "Verifique se produtos.json, compras.json e compradores.json existem."
-    )
+            if ARQUIVOS_DADOS.issubset(dados):
+                return arquivo.parent
+
+    raise RuntimeError("Arquivos de dados não encontrados.")
 
 
 DATA_DIR = localizar_dados()
 
 load_dotenv(BASE_DIR / ".env")
-
-# A localização dos dados é configurável pelo ambiente.
-# Caminhos relativos são resolvidos a partir da pasta chat-bot, evitando
-# dependência de uma estrutura específica de diretórios ou do computador.
-DATA_DIR_CONFIG = os.getenv("DATA_DIR")
-
-if not DATA_DIR_CONFIG:
-    raise RuntimeError(
-        "DATA_DIR não foi configurada. "
-        "Defina no .env o caminho da pasta que contém produtos.json, "
-        "compras.json e compradores.json."
-    )
-
-DATA_DIR = Path(DATA_DIR_CONFIG).expanduser()
-if not DATA_DIR.is_absolute():
-    DATA_DIR = BASE_DIR / DATA_DIR
-DATA_DIR = DATA_DIR.resolve()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
