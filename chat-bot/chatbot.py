@@ -16,12 +16,13 @@ ARQUIVOS_DADOS = {
 
 def localizar_dados():
     """Encontra a pasta que contém os arquivos JSON necessários."""
-    for arquivo in Path.cwd().rglob("produtos.json"):
-        pasta = arquivo.parent
-        arquivos = {item.name for item in pasta.glob("*.json")}
+    for raiz in [BASE_DIR, *BASE_DIR.parents]:
+        for arquivo in raiz.rglob("produtos.json"):
+            pasta = arquivo.parent
+            arquivos = {item.name for item in pasta.glob("*.json")}
 
-        if ARQUIVOS_DADOS.issubset(arquivos):
-            return pasta
+            if ARQUIVOS_DADOS.issubset(arquivos):
+                return pasta
 
     raise RuntimeError("Arquivos de dados não encontrados.")
 
