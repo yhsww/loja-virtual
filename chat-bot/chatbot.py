@@ -7,8 +7,35 @@ from google import genai
 
 
 BASE_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = BASE_DIR.parent.parent
-DATA_DIR = PROJECT_ROOT / "dados"
+
+
+def localizar_diretorio_dados():
+    """
+    Localiza a pasta compartilhada de dados da aplicação.
+
+    Estrutura atual:
+        loja2/
+        ├── dados/
+        └── loja-virtual/
+            └── chat-bot/
+
+    O primeiro caminho mantém compatibilidade caso o projeto seja reorganizado
+    futuramente e a pasta dados fique diretamente na raiz do repositório.
+    """
+    candidatos = (
+        BASE_DIR.parent / "dados",
+        BASE_DIR.parent.parent / "dados",
+    )
+
+    for caminho in candidatos:
+        if caminho.is_dir():
+            return caminho
+
+    # Mantém uma referência determinística para mensagens de erro.
+    return BASE_DIR.parent.parent / "dados"
+
+
+DATA_DIR = localizar_diretorio_dados()
 
 load_dotenv(BASE_DIR / ".env")
 
@@ -36,6 +63,11 @@ def carregar_json(nome_arquivo):
 
         if dados is None:
             return []
+
+        if not isinstance(dados, (list, dict)):
+            raise RuntimeError(
+                f"O arquivo JSON deve conter uma lista ou objeto: {caminho}"
+            )
 
         return dados
 
