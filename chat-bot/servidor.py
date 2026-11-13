@@ -63,7 +63,7 @@ def conversar(dados: ChatBotPergunta):
 
         return JSONResponse(
             content={"resposta": resposta},
-            headers={"Content-Type": "application/json; charset=utf-8"},
+            media_type="application/json",
         )
 
     except ValueError as exc:
