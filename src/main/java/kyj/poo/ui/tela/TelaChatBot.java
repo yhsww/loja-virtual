@@ -253,7 +253,7 @@ public class TelaChatBot extends Tela {
             usuario ? Color.WHITE : Tema.PRIMARIA_ESCURA
         );
 
-        JTextArea texto = new JTextArea(mensagem);
+        JTextArea texto = new JTextArea(formatarMensagem(mensagem));
         texto.setEditable(false);
         texto.setFocusable(false);
         texto.setLineWrap(true);
@@ -263,7 +263,7 @@ public class TelaChatBot extends Tela {
         texto.setFont(Tema.fonte(Font.PLAIN, 14f));
         texto.setForeground(usuario ? Color.WHITE : Tema.TEXTO);
 
-        // Mantém as mensagens legíveis sem criar uma bolha excessivamente larga.
+        // Limita a largura para manter as respostas confortáveis de ler.
         texto.setColumns(42);
         texto.setRows(1);
         texto.setMaximumSize(new Dimension(520, Integer.MAX_VALUE));
@@ -273,11 +273,30 @@ public class TelaChatBot extends Tela {
         conteudo.setBackground(fundo);
 
         conteudo.add(nome);
-        conteudo.add(Box.createVerticalStrut(5));
+        conteudo.add(Box.createVerticalStrut(6));
         conteudo.add(texto);
 
         bolha.add(conteudo, BorderLayout.CENTER);
 
         return bolha;
+    }
+
+    /**
+     * Converte uma formatação Markdown simples, normalmente produzida
+     * pelo chatbot, para uma apresentação mais limpa no JTextArea.
+     */
+    private String formatarMensagem(String mensagem) {
+        if (mensagem == null || mensagem.isBlank()) {
+            return "";
+        }
+
+        String texto = mensagem
+            .replace("\r\n", "\n")
+            .replace("\r", "\n")
+            .replaceAll("\\*\\*(.+?)\\*\\*", "$1")
+            .replaceAll("(?m)^\\s*-\\s+", "• ")
+            .replaceAll("(?m)^\\s*\\*\\s+", "• ");
+
+        return texto.trim();
     }
 }
