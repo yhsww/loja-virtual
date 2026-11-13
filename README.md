@@ -259,6 +259,85 @@ kyj.poo.Main
 
 ---
 
+## Chatbot da Íris
+
+O projeto também possui um chatbot integrado à interface Swing. O backend da assistente Íris está em Python, utilizando FastAPI, Uvicorn e a API do Google Gemini.
+
+### Estrutura do chatbot
+
+chat-bot/
+├── chatbot.py
+├── servidor.py
+├── requirements.txt
+└── .env.example
+
+Os dados utilizados pelo chatbot permanecem na pasta dados/: compradores.json, produtos.json e compras.json.
+
+O backend localiza essa pasta automaticamente a partir da localização do próprio chat-bot, portanto não é necessário configurar um caminho manual para os arquivos JSON.
+
+### Configuração
+
+Entre na pasta do backend:
+
+cd chat-bot
+
+Crie o ambiente virtual:
+
+python -m venv .venv
+
+Ative:
+
+.\.venv\Scripts\Activate.ps1
+
+Instale as dependências:
+
+python -m pip install -r requirements.txt
+
+Crie o arquivo chat-bot/.env a partir do exemplo:
+
+Copy-Item .env.example .env
+
+Depois, edite o .env e informe sua chave do Gemini:
+
+GEMINI_API_KEY=sua_chave
+GEMINI_MODEL=gemini-3.5-flash
+
+Não envie o arquivo .env para o GitHub. Ele já está protegido pelo .gitignore.
+
+### Executando a API
+
+O Maven deve ser executado a partir da pasta loja-virtual, e o servidor Python a partir da pasta chat-bot.
+
+Na pasta chat-bot:
+
+python -m uvicorn servidor:app --host 0.0.0.0 --port 5000
+
+A API ficará disponível em http://127.0.0.1:5000.
+
+Teste a saúde da API:
+
+Invoke-RestMethod -Uri http://127.0.0.1:5000/health
+
+Resposta esperada: status=ok.
+
+### Testando o chatbot
+
+Use uma requisição POST para /chat. Exemplo no PowerShell:
+
+$body = @{ nome = "Fulano"; cpf = "12345678910"; email = "fulano@email.com"; pergunta = "Olá" } | ConvertTo-Json
+Invoke-RestMethod -Uri http://127.0.0.1:5000/chat -Method Post -ContentType "application/json; charset=utf-8" -Body ([System.Text.Encoding]::UTF8.GetBytes($body))
+
+O chatbot utiliza o CPF e o e-mail enviados na requisição para localizar somente o histórico de compras correspondente ao cliente.
+
+### Problemas comuns
+
+Porta 5000 já está em uso: verifique com netstat -ano | findstr :5000 e encerre somente o PID que você confirmou ser do servidor anterior.
+
+Erro ao executar Maven: o pom.xml está na raiz de loja-virtual. Use cd loja-virtual e depois mvn clean compile. Não execute Maven dentro de chat-bot.
+
+Erro do Gemini: o backend registra no terminal o tipo e a mensagem do erro retornado pelo Gemini. Confirme GEMINI_API_KEY, GEMINI_MODEL e a disponibilidade do modelo.
+
+
 ## Persistência de dados
 
 A aplicação utiliza **Gson 2.11.0** para trabalhar com dados em formato JSON.
