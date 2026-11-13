@@ -31,6 +31,7 @@ import kyj.poo.ui.Tema;
 public class TelaChatBot extends Tela {
 
     private final JPanel conversa = new JPanel();
+    private final AvatarIris avatarIris = new AvatarIris();
     private final JTextField pergunta = new JTextField();
     private final JButton enviar = new JButton("Enviar");
     private final JLabel status = Tema.subtitulo("");
@@ -46,6 +47,8 @@ public class TelaChatBot extends Tela {
 
         JPanel cabecalho = Tema.painel(new BorderLayout());
 
+        avatarIris.setPreferredSize(new Dimension(82, 82));
+
         JPanel textos = Tema.coluna();
         textos.add(Tema.titulo("Íris - Assistente Virtual"));
         textos.add(Box.createVerticalStrut(4));
@@ -55,8 +58,9 @@ public class TelaChatBot extends Tela {
             )
         );
 
-        JPanel esquerda = new JPanel(new BorderLayout());
+        JPanel esquerda = new JPanel(new BorderLayout(12, 0));
         esquerda.setBackground(Tema.FUNDO);
+        esquerda.add(avatarIris, BorderLayout.WEST);
         esquerda.add(textos, BorderLayout.CENTER);
 
         cabecalho.add(esquerda, BorderLayout.WEST);
@@ -136,6 +140,7 @@ public class TelaChatBot extends Tela {
         adicionarMensagem("Você", texto, true);
         pergunta.setText("");
         alterarEstadoEnvio(false, "Íris está respondendo...");
+        avatarIris.setPensando(true);
 
         SwingWorker<String, Void> worker = new SwingWorker<>() {
             @Override
@@ -160,6 +165,7 @@ public class TelaChatBot extends Tela {
                 } catch (ExecutionException e) {
                     mostrarErroConexao();
                 } finally {
+                    avatarIris.setPensando(false);
                     alterarEstadoEnvio(true, "");
                     pergunta.requestFocusInWindow();
                 }
@@ -182,6 +188,8 @@ public class TelaChatBot extends Tela {
     }
 
     private void mostrarErroConexao() {
+        avatarIris.setPensando(false);
+
         adicionarMensagem(
             "Íris",
             "Não foi possível conectar ao servidor no momento. "
