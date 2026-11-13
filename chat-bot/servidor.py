@@ -17,11 +17,33 @@ class ChatBotPergunta(BaseModel):
     email: str = Field(..., min_length=1)
     pergunta: str = Field(..., min_length=1)
 
+    def model_post_init(self, __context):
+        self.nome = self.nome.strip()
+        self.cpf = self.cpf.strip()
+        self.email = self.email.strip()
+        self.pergunta = self.pergunta.strip()
+
+        if not self.cpf:
+            raise ValueError("O CPF não pode estar vazio.")
+
+        if not self.email:
+            raise ValueError("O e-mail não pode estar vazio.")
+
+        if not self.pergunta:
+            raise ValueError("A pergunta não pode estar vazia.")
+
 
 @app.get("/")
 def inicio():
     return {
         "mensagem": "O chat está funcionando!"
+    }
+
+
+@app.get("/health")
+def health():
+    return {
+        "status": "ok"
     }
 
 
