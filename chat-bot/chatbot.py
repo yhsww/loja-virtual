@@ -10,18 +10,6 @@ BASE_DIR = Path(__file__).resolve().parent
 
 
 def localizar_diretorio_dados():
-    """
-    Localiza a pasta compartilhada de dados da aplicação.
-
-    Estrutura atual:
-        loja2/
-        ├── dados/
-        └── loja-virtual/
-            └── chat-bot/
-
-    O primeiro caminho mantém compatibilidade caso o projeto seja reorganizado
-    futuramente e a pasta dados fique diretamente na raiz do repositório.
-    """
     candidatos = (
         BASE_DIR.parent / "dados",
         BASE_DIR.parent.parent / "dados",
@@ -30,8 +18,6 @@ def localizar_diretorio_dados():
     for caminho in candidatos:
         if caminho.is_dir():
             return caminho
-
-    # Mantém uma referência determinística para mensagens de erro.
     return BASE_DIR.parent.parent / "dados"
 
 
@@ -49,7 +35,6 @@ if not API_KEY:
     )
 
 client = genai.Client(api_key=API_KEY)
-
 
 def carregar_json(nome_arquivo):
     caminho = DATA_DIR / nome_arquivo
