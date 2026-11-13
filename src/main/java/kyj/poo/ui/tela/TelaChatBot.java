@@ -271,7 +271,7 @@ public class TelaChatBot extends Tela {
         texto.setFont(Tema.fonte(Font.PLAIN, 14f));
         texto.setForeground(usuario ? Color.WHITE : Tema.TEXTO);
 
-        // Limita a largura para manter as respostas confortáveis de ler.
+        //limita a largura para manter as respostas confortáveis de ler
         texto.setColumns(42);
         texto.setRows(1);
         texto.setMaximumSize(new Dimension(520, Integer.MAX_VALUE));
@@ -289,10 +289,7 @@ public class TelaChatBot extends Tela {
         return bolha;
     }
 
-    /**
-     * Converte uma formatação Markdown simples, normalmente produzida
-     * pelo chatbot, para uma apresentação mais limpa no JTextArea.
-     */
+    //converte uma formatação Markdown simples, normalmente produzida pelo chatbot
     private String formatarMensagem(String mensagem) {
         if (mensagem == null || mensagem.isBlank()) {
             return "";
