@@ -79,7 +79,12 @@ def conversar(dados: ChatBotPergunta):
         ) from exc
 
     except Exception as exc:
+        print(
+            f"[ERRO API] {type(exc).__name__}: {exc}"
+        )
         raise HTTPException(
             status_code=500,
-            detail="Erro interno ao processar a pergunta.",
+            detail=(
+                f"{type(exc).__name__}: {exc}"
+            ),
         ) from exc
